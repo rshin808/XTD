@@ -2,23 +2,23 @@ import types
 
 class userSettings:
     def __init__(self):
-        self._vco = None
+        self._osc = None
         self._testSignal = None
-        self._scrod = None
+        self._jtag = None
         self._bunchMarkerA = None
         self._bunchMarkerB = None
 
     @property
-    def vco(self):
-        return self._vco
+    def osc(self):
+        return self._input
 
     @property
     def testSignal(self):
         return self._testSignal
 
     @property
-    def scrod(self):
-        return self._scrod
+    def jtag(self):
+        return self._jtag
 
     @property
     def bunchMarkerA(self):
@@ -28,22 +28,22 @@ class userSettings:
     def bunchMarkerB(self):
         return self._bunchMarkerB
 
-    @vco.setter
-    def vco(self, enabled):
-        assert type(enabled) == types.BooleanType, "vco requires a boolean"
-        self._vco = enabled
+    @osc.setter
+    def osc(self, enabled):
+        assert type(enabled) == types.BooleanType, "osc requires a boolean"
+        self._osc = enabled
 
     @testSignal.setter
     def testSignal(self, on):
         assert type(on) == types.BooleanType, "testSignal requires a boolean"
         self._testSignal = on
 
-    @scrod.setter
-    def scrod(self, choice):
-        assert type(choice) == types.StringType, "scrod requires a string"
-        assert choice.lower() == "a" or choice.lower() == "b", "scrod is either A or B"
-        
-        self._scrod = choice.lower()
+    @jtag.setter
+    def jtag(self, choice):
+        assert type(choice) == types.BooleanType, "scrod requires a boolean"
+        #assert choice.lower() == "a" or choice.lower() == "b", "scrod is either A or B"
+        #self._jtag = choice.lower()
+        self._jtag = A
 
     @bunchMarkerA.setter
     def bunchMarkerA(self, value):
