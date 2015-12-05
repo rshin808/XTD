@@ -12,7 +12,7 @@ import csv
 from font import Font
 import spidev
 from getIP import *
-import os
+import shutdown
 
 # Default Values
 osc = 1
@@ -141,7 +141,11 @@ else:
 try:
     display = seps525.SEPS525_nhd(DC = PINS["DISPDC"], RES = PINS["DISPRES"], gpio = GPIO)
     display.fill_screen((255,255))
+    count = 50
     while(True):          
+        BMB.bunchMarker(int(user.bunchMarkerB) + count)
+        time.sleep(0.2)
+        bmbValue = str(int(user.bunchMarkerB) + count)
         # Draw Labels
         loffset = 10
         inputDisp = TS(loffset, 10, 14, inputTitle, font14h)
@@ -185,22 +189,12 @@ try:
         else:
             pllValue="LOCKED"
         
-        if GPIO.input(PINS["TEST1"]) == False:
-            break; 
-
+        count += 50
 except Exception, e:
     import csv
     with open("log.txt", "a") as logFile:
         csvW = csv.writer(logFile)
         row = [str(e)]
         csvW.writerow(row)
-loffset = 10
-display.fill_screen((255, 255))
-shutdownDisp = TS(loffset, 26, 14, "Shutting Down", font14h)
-descDisp1 = TS(loffset, 42, 14, "Wait for Screen", font14h)
-descDisp2 = TS(loffset, 74, 14, "to Disappear", font14h)
 
-shutdownDisp.draw_string((0, 0), (255, 255), display)
-descDisp1.draw_string((0, 0), (255, 255), display)
-descDisp2.draw_string((0, 0), (255, 255), display)
-os.system("shutdown -h now")
+GPIO.cleanup()

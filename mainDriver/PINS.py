@@ -1,7 +1,7 @@
 PINS = {
     "SCRODSEL" : 28,
     "TESTEN" : 29,
-    "INTERRUPT" : 7,
+    "INTERRUPT" : 9,
     "TMS" : 14,
     "TDO" : 15,
     "TDI" : 18,
@@ -12,7 +12,7 @@ PINS = {
     "BMBRCLK" : 27,
     "SRA" : 22,
     "SRB" : 17,
-    "TEST1" : 9,
+    "TEST1" : 7,
     "DISPRES" : 30,
     "DISPDC" : 31,
 }
