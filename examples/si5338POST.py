@@ -29,10 +29,11 @@ class si5338POST:
             self._BUS.write_byte_data(self._address, self._REGS["ENOUTS"], 0x0C)
 
         self._GPIO.setup(self._interrupt, self._GPIO.IN)
-
     def check(self):
         if self._GPIO.input(self._interrupt) == True:
             print "Warning LoL"
             return True
         else:
             return False         
+    
+    

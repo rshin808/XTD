@@ -7,7 +7,6 @@
 # Libraries
 import spidev
 import time
-import RPi.GPIO as gpio
 import csv
 from font import Font
 
@@ -84,10 +83,11 @@ class SEPS525_nhd:
                font, The font without spaces.
                font2, The font with spaces.
     """
-    def __init__(self, DC = None, RES = None, WIDTH = 160, HEIGHT = 128, font = "font14h", font2 = "font14hL"):
+    def __init__(self, DC = None, RES = None, WIDTH = 160, HEIGHT = 128, font = "font14h", font2 = "font14hL", gpio = None):
 	    # Initialize gpio
         self._DC = DC
         self._RES = RES
+        self._gpio = gpio
         self.__setup_gpio()
         self._WIDTH = WIDTH
         self._HEIGHT = HEIGHT
@@ -95,19 +95,16 @@ class SEPS525_nhd:
         self._font2 = Font(font2)
         self.__seps525_init()
         self.__init_oled_display()
-	
 
     """
         This sets the gpio (and spi) for the SEPS525 driver.
     """
     def __setup_gpio(self):
-        global gpio
         global spi
-        gpio.setmode(gpio.BCM)
-        gpio.setup(self._RES, gpio.OUT)
-        gpio.output(self._RES, True)
-        gpio.setup(self._DC, gpio.OUT)
-        gpio.output(self._DC, False)
+        self._gpio.setup(self._RES, self._gpio.OUT)
+        self._gpio.output(self._RES, True)
+        self._gpio.setup(self._DC, self._gpio.OUT)
+        self._gpio.output(self._DC, False)
         time.sleep(0.1)
 
         
@@ -120,9 +117,8 @@ class SEPS525_nhd:
         This cleans up the gpio and turns off the SEPS525 driver.
     """
     def end_gpio(self):
-        global gpio
-        gpio.output(self._RES, True)
-        gpio.cleanup()
+        self._gpio.output(self._RES, True)
+        self._gpio.cleanup()
         exit()
 
 
@@ -130,11 +126,10 @@ class SEPS525_nhd:
         This initializes the SEPS525 driver.
     """
     def __seps525_init(self):
-        global gpio
         # Startup RS
-        gpio.output(self._DC, False)
+        self._gpio.output(self._DC, False)
         time.sleep(0.5)
-        gpio.output(self._DC, True)
+        self._gpio.output(self._DC, True)
         time.sleep(0.5)
     
         # Set normal driving current
@@ -242,23 +237,21 @@ class SEPS525_nhd:
         Param: value, The data to write.
     """
     def data(self, value):
-        global gpio
         global spi
         # send value
-        gpio.output(self._DC, True)
+        self._gpio.output(self._DC, True)
         spi.xfer2(list(value))
-        gpio.output(self._DC, False)
+        self._gpio.output(self._DC, False)
     
 
     """
         This writes the command address of display for the SEPS525 driver.
     """
     def data_start(self):
-        global gpio
         global spi
-        gpio.output(self._DC, False)
+        self._gpio.output(self._DC, False)
         spi.xfer([0x22])
-        gpio.output(self._DC, True)
+        self._gpio.output(self._DC, True)
 
     
     """
@@ -267,12 +260,11 @@ class SEPS525_nhd:
                value, The value to write to the register.
     """
     def seps525_reg(self, address, value):
-        global gpio
         global spi
         # goto index of address and set it to value
-        gpio.output(self._DC, False)
+        self._gpio.output(self._DC, False)
         spi.xfer2([address])
-        gpio.output(self._DC, True)
+        self._gpio.output(self._DC, True)
         spi.xfer2([value])
 
     

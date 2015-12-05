@@ -7,7 +7,7 @@ PINS = {
     "TDI" : 18,
     "BMBSRCLK" : 23,
     "BMARCLK" : 24,
-    "BMASCLK" : 25,
+    "BMASRCLK" : 25,
     "TCK" : 4,
     "BMBRCLK" : 27,
     "SRA" : 22,

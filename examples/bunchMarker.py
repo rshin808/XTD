@@ -10,13 +10,20 @@ class bcolors:
     CYAN = '\033[96m'
     BROWN = '\033[33m'
 
+binary = lambda n: '' if n == 0 else binary(n / 2) + str(n % 2)
+
 class bunchMarker:
     def __init__(self, BMSRCLK = None, BMRCLK = None, SR = None, gpio = None):
         self._BMSRCLK = BMSRCLK
         self._BMRCLK = BMRCLK
         self._SR = SR
         self._GPIO = gpio
-        self._binary = lambda n: '' if n == 0 else binary(n / 2) + str(n % 2)
+        self._init()
+
+    def _init(self):
+        self._GPIO.setup(self._BMSRCLK, self._GPIO.OUT)
+        self._GPIO.setup(self._BMRCLK, self._GPIO.OUT)
+        self._GPIO.setup(self._SR, self._GPIO.OUT)
 
     @property
     def BMSRCLK(self):
@@ -52,7 +59,7 @@ class bunchMarker:
     
     def bunchMarker(self, value):
         bm = 65535 - value
-        bmSD = self._binary(bm)
+        bmSD = binary(bm)
         
-        self.serialShift(bm, self._SR, self._BMSRCLK, self._BMRCLK)
-        print b.colors.OKGREEN + "Bench Marker shifting is complete" + bcolors.ENDC
+        self.serialShift(bmSD)
+        print bcolors.OKGREEN + "Bench Marker shifting is complete" + bcolors.ENDC
