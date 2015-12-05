@@ -166,6 +166,8 @@ try:
         schrodValueDisp.draw_string((0, 0), (255, 255), display)
         IPValueDisp.draw_string((0, 0), (255, 255), display)
         
+        IPValue = getIP()
+
         if pll.check():
             pllValue="WARNING"
         else:

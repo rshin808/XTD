@@ -16,4 +16,4 @@ def getIP():
         line = line.split("inet addr:")
         return line[1].split()[0]
     except:
-        return "No IP"
+        return "No IP       "
