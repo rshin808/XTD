@@ -59,7 +59,7 @@ if bool(user.testSignal) == True:
     print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
     GPIO.output(PINS["TESTEN"], True)
 
-if bool(user.scrod) == "a":
+if user.scrod.lower() == "a":
     print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
     GPIO.output(PINS["SCRODSEL"], True)
 else:
@@ -107,7 +107,7 @@ if user.testSignal == True:
 else:
     tesxtCircuitValue = "OFF"
 pllValue = "LOCKED"
-schrodValue = user.scrod
+schrodValue = user.scrod.upper()
 
 try:
     while(True):
@@ -142,6 +142,21 @@ try:
             testCircuitValueDisp.draw_string((0, 0), (255, 255), display)
             pllValueDisp.draw_string((0, 0), (255, 255), display)
             schrodValueDisp.draw_string((0, 0), (255, 255), display)
+        
+        print "Select SCROD: (A or B)"
+        scrod = raw_input()
+
+        user.testSignal = bool(int(testSignal))
+        user.scrod = scrod
+
+        if user.scrod.lower() == "a":
+            print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
+            GPIO.output(PINS["SCRODSEL"], True)
+        else:
+            print bcolors.OKGREEN + "SCROD B SELECTED" + bcolors.ENDC
+            GPIO.output(PINS["SCRODSEL"], False)
+        
+        schrodValue = user.scrod.upper()
 
         print "Input new bunchMarkerA: (0 - 5280)"
         bma = raw_input()
