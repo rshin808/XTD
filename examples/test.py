@@ -1,7 +1,6 @@
-import RPi.GPIO as gpio
-from PINS import *
-
-gpio.setmode(gpio.BCM)
-gpio.setup(PINS["TESTEN"], gpio.OUT)
-gpio.output(PINS["TESTEN"], True)
+try:
+    a == 1
+except Exception, e:
+    print "here"
+    print e
 

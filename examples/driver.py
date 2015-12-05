@@ -12,6 +12,7 @@ import csv
 from font import Font
 import spidev
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PINS["TESTEN"], GPIO.OUT)
 GPIO.setup(PINS["SCRODSEL"], GPIO.OUT)
@@ -41,29 +42,29 @@ bus.close()
 
 print "Enable Test Signal: (0: Disable or 1: Enable)"
 testSignal = raw_input()
-print "Select SCROD: (A or B)"
+print "\n" + "Select SCROD: (0: A&B or 1: A)"
 scrod = raw_input()
-print "Input bunchMarkerA: (0 - 5280)"
+print "\n"+"Input bunchMarkerA: (0 - 5280)"
 bma = raw_input()
-print "Input bunchMarkerB: (0 - 5280)"
+print "\n"+"Input bunchMarkerB: (0 - 5280)"
 bmb = raw_input()
 
 print bin(int(bma))
 print bin(int(bmb))
 
 user.testSignal = bool(int(testSignal))
-user.scrod = scrod
+user.scrod = bool(int(scrod))
 
 
 if bool(user.testSignal) == True:
     print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
     GPIO.output(PINS["TESTEN"], True)
 
-if user.scrod.lower() == "a":
+if user.scrod == True:
     print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
     GPIO.output(PINS["SCRODSEL"], True)
 else:
-    print bcolors.OKGREEN + "SCROD B SELECTED" + bcolors.ENDC
+    print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
     GPIO.output(PINS["SCRODSEL"], False)
 
 user.bunchMarkerA = int(bma)
@@ -101,13 +102,16 @@ schrod = "SCROD:"
 # Set Label Values
 bmaValue = str(user.bunchMarkerA)
 bmbValue = str(user.bunchMarkerB)
-testCircuitValue = ""
+testCircuitValue = " "
 if user.testSignal == True:
     testCircuitValue = "ON"
 else:
     tesxtCircuitValue = "OFF"
 pllValue = "LOCKED"
-schrodValue = user.scrod.upper()
+if user.scrod == True:
+    schrodValue = "A"
+else:
+    schrodValue = "AB"
 
 try:
     while(True):
@@ -143,20 +147,23 @@ try:
             pllValueDisp.draw_string((0, 0), (255, 255), display)
             schrodValueDisp.draw_string((0, 0), (255, 255), display)
         
-        print "Select SCROD: (A or B)"
+        print "\n"+"Select SCROD: (0: A&B or 1: A)"
         scrod = raw_input()
 
         user.testSignal = bool(int(testSignal))
-        user.scrod = scrod
+        user.scrod = bool(int(scrod))
 
-        if user.scrod.lower() == "a":
+        if user.scrod == True:
             print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
             GPIO.output(PINS["SCRODSEL"], True)
         else:
-            print bcolors.OKGREEN + "SCROD B SELECTED" + bcolors.ENDC
+            print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
             GPIO.output(PINS["SCRODSEL"], False)
-        
-        schrodValue = user.scrod.upper()
+       
+        if user.scrod == True:
+            schrodValue = "A"
+        else:
+            schrodValue = "AB"
 
         print "Input new bunchMarkerA: (0 - 5280)"
         bma = raw_input()

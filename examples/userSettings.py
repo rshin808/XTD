@@ -40,10 +40,10 @@ class userSettings:
 
     @scrod.setter
     def scrod(self, choice):
-        assert type(choice) == types.StringType, "scrod requires a string"
-        assert choice.lower() == "a" or choice.lower() == "b", "scrod is either A or B"
-        
-        self._scrod = choice.lower()
+        assert type(choice) == types.BooleanType, "scrod requires a boolean"
+        #assert choice.lower() == "a" or choice.lower() == "b", "scrod is either A or B"
+        #self._scrod = choice.lower()
+        self._scrod = A
 
     @bunchMarkerA.setter
     def bunchMarkerA(self, value):
