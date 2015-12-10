@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Xtd : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Xtd</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/rshin808/XTD">View on GitHub</a>
+
+          <h1 id="project_title">Xtd</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/rshin808/XTD/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/rshin808/XTD/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="xtd" class="anchor" href="#xtd" aria-hidden="true"><span class="octicon octicon-link"></span></a>XTD</h1>
+
+<p>This is a driver for the XTD utilizing the Raspberry Pi.  </p>
+
+<h1>
+<a id="installation-and-usage" class="anchor" href="#installation-and-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation and Usage</h1>
+
+<p>Download the code from the <a href="https://github.com/rshin808/XTD">respository</a>.<br>
+Go to the mainDriver directory. The directory tree is shown below:  </p>
+
+<pre><code>XTD/
+    examples/
+    mainDriver/
+</code></pre>
+
+<p>mainDriver contains the current working code for a default and interactive driver.<br>
+In order to run the default driver  use the command:  </p>
+
+<pre><code>python defaultDriver.py
+</code></pre>
+
+<p>In order to run the interactive driver use the command:  </p>
+
+<pre><code>python driver.py
+</code></pre>
+
+<p>To set the defaultDriver.py to run on startup, edit the "/etc/rc.local" file.<br>
+Add this line:  </p>
+
+<pre><code>python /path-to-XTD/XTD/mainDriver/defaultDriver.py &amp;
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Xtd maintained by <a href="https://github.com/rshin808">rshin808</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
