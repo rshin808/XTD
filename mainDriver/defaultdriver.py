@@ -15,7 +15,7 @@ from getIP import *
 import os
 
 # Default Values
-osc = 1
+osc = 0
 testSignal = 0
 jtag = 1
 bma = 501 
@@ -78,6 +78,9 @@ user.jtag = bool(int(jtag))
 if bool(user.testSignal) == True:
     print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
     GPIO.output(PINS["TESTEN"], True)
+else:
+    print bcolors.OKGREEN + "Test Signal OFF" + bcolors.ENDC
+    GPIO.output(PINS["TESTEN"], False)
 
 if user.jtag == True:
     print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
