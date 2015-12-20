@@ -27,7 +27,7 @@ GPIO.cleanup()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PINS["TESTEN"], GPIO.OUT)
-GPIO.setup(PINS["SCRODSEL"], GPIO.OUT)
+GPIO.setup(PINS["JTAGSEL"], GPIO.OUT)
 GPIO.setup(PINS["TEST1"], GPIO.IN)
 GPIO.output(PINS["TESTEN"], True)
 
@@ -60,7 +60,7 @@ bus.close()
 '''
 print "Enable Test Signal: (0: Disable or 1: Enable)"
 testSignal = raw_input()
-print "Select SCROD: (A or A&B)"i
+print "Select JTAG: (A or A&B)"i
 scrod = raw_input()
 print "Input bunchMarkerA: (0 - 5280)"
 bma = raw_input()
@@ -83,11 +83,11 @@ else:
     GPIO.output(PINS["TESTEN"], False)
 
 if user.jtag == True:
-    print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], True)
+    print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], True)
 else:
-    print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], False)
+    print bcolors.OKGREEN + "JTAG A&B SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], False)
 
 user.bunchMarkerA = int(bma)
 user.bunchMarkerB = int(bmb)
@@ -188,7 +188,8 @@ try:
         else:
             pllValue="LOCKED"
         
-        if GPIO.input(PINS["TEST1"]) == False:
+        # Depends on how Khan feels
+        if GPIO.input(PINS["TEST1"]) == True:
             break; 
 
 except Exception, e:

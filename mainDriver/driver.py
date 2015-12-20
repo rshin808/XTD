@@ -11,11 +11,13 @@ from text import Text_string as TS
 import csv
 from font import Font
 import spidev
+from getIP import *
+import os
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PINS["TESTEN"], GPIO.OUT)
-GPIO.setup(PINS["SCRODSEL"], GPIO.OUT)
+GPIO.setup(PINS["JTAGSEL"], GPIO.OUT)
 
 GPIO.output(PINS["TESTEN"], True)
 
@@ -42,8 +44,8 @@ bus.close()
 
 print "Enable Test Signal: (0: Disable or 1: Enable)"
 testSignal = raw_input()
-print "\n" + "Select SCROD: (0: A&B or 1: A)"
-scrod = raw_input()
+print "\n" + "Select JTAG: (0: A&B or 1: A)"
+jtag = raw_input()
 print "\n"+"Input bunchMarkerA: (0 - 5280)"
 bma = raw_input()
 print "\n"+"Input bunchMarkerB: (0 - 5280)"
@@ -53,19 +55,21 @@ print bin(int(bma))
 print bin(int(bmb))
 
 user.testSignal = bool(int(testSignal))
-user.scrod = bool(int(scrod))
+user.jtag = bool(int(jtag))
 
 
 if bool(user.testSignal) == True:
     print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
     GPIO.output(PINS["TESTEN"], True)
+else:
+    GPIO.output(PINS["TESTEN"], False)
 
 if user.scrod == True:
-    print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], True)
+    print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], True)
 else:
-    print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], False)
+    print bcolors.OKGREEN + "JTAG A&B SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], False)
 
 user.bunchMarkerA = int(bma)
 user.bunchMarkerB = int(bmb)
@@ -93,11 +97,14 @@ font14hL.init_bitmap("font14hL.csv")
 # Initialize Display
 
 # Set Label Strings
+inputTitle = "XTD:"
 bmaTitle = "BMA:"
 bmbTitle = "BMB:"
-testCircuit = "TEST CIRCUIT:"
-pll = "PLL:"
-schrod = "SCROD:"
+testCircuitTitle = "TEST CIRCUIT:"
+pllTitle = "PLL:"
+jtagTitle = "JTAG:"
+IPTitle = "IP:"
+IPValue = getIP()
 
 # Set Label Values
 bmaValue = str(user.bunchMarkerA)
@@ -106,12 +113,12 @@ testCircuitValue = " "
 if user.testSignal == True:
     testCircuitValue = "ON"
 else:
-    tesxtCircuitValue = "OFF"
+    testCircuitValue = "OFF"
 pllValue = "LOCKED"
-if user.scrod == True:
-    schrodValue = "A"
+if user.jtag == True:
+    jtagValue = "A"
 else:
-    schrodValue = "AB"
+    jtagValue = "AB"
 
 try:
     while(True):
@@ -123,15 +130,17 @@ try:
             loffset = 10
             bmaDisp = TS(loffset, 10, 14, bmaTitle, font14h)
             bmbDisp = TS(loffset, 26, 14, bmbTitle, font14h)
-            testCircuitDisp = TS(loffset, 42, 14, testCircuit, font14h)
-            pllDisp = TS(loffset, 58, 14, pll, font14h)
-            schrodDisp = TS(loffset, 74, 14, schrod, font14h)
+            testCircuitDisp = TS(loffset, 42, 14, testCircuitTitle, font14h)
+            pllDisp = TS(loffset, 58, 14, pllTitle, font14h)
+            jtagDisp = TS(loffset, 74, 14, jtagTitle, font14h)
+            IPDisp = TS(loffset, 106, 14, IPTitle, font14h)
 
             bmaDisp.draw_string((0, 0), (255, 255), display)
             bmbDisp.draw_string((0, 0), (255, 255), display)
             testCircuitDisp.draw_string((0, 0), (255, 255), display)
             pllDisp.draw_string((0, 0), (255, 255), display)
-            schrodDisp.draw_string((0, 0), (255, 255), display)
+            jtagDisp.draw_string((0, 0), (255, 255), display)
+            IPDisp.draw_string((0, 0), (255, 255), display)
 
             # Draw Values
             loffset = 20
@@ -139,31 +148,40 @@ try:
             bmbValueDisp = TS(loffset + len(bmbDisp), 26, 14, bmbValue, font14h)
             testCircuitValueDisp = TS(loffset + len(testCircuitDisp), 42, 14, testCircuitValue, font14h)
             pllValueDisp = TS(loffset + len(pllDisp), 58, 14, pllValue, font14h)
-            schrodValueDisp = TS(loffset + len(schrodDisp), 74, 14, schrodValue, font14h)
+            jtagValueDisp = TS(loffset + len(jtagDisp), 74, 14, jtagValue, font14h)
+            IPValueDisp = TS(loffset + len(IPDisp), 106, 14, IPValue, font14h)
 
             bmaValueDisp.draw_string((0, 0), (255, 255), display)
             bmbValueDisp.draw_string((0, 0), (255, 255), display)
             testCircuitValueDisp.draw_string((0, 0), (255, 255), display)
             pllValueDisp.draw_string((0, 0), (255, 255), display)
-            schrodValueDisp.draw_string((0, 0), (255, 255), display)
+            jtagValueDisp.draw_string((0, 0), (255, 255), display)
+            IPValueDisp.draw_string((0, 0), (255, 255), display)
+
+            IPValue = getIP()
         
-        print "\n"+"Select SCROD: (0: A&B or 1: A)"
-        scrod = raw_input()
+        print "Enable Test Signal: (0: Disable or 1: Enable)"
+        testSignal = raw_input()
+        print "\n" + "Select JTAG: (0: A&B or 1: A)"
+        jtag = raw_input()
+
+        print "\n"+"Select JTAG: (0: A&B or 1: A)"
+        jtag = raw_input()
 
         user.testSignal = bool(int(testSignal))
-        user.scrod = bool(int(scrod))
+        user.jtag = bool(int(jtag))
 
-        if user.scrod == True:
-            print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
-            GPIO.output(PINS["SCRODSEL"], True)
+        if user.jtag == True:
+            print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
+            GPIO.output(PINS["JTAGSEL"], True)
         else:
-            print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
-            GPIO.output(PINS["SCRODSEL"], False)
+            print bcolors.OKGREEN + "JTAG A&B SELECTED" + bcolors.ENDC
+            GPIO.output(PINS["JTAGSEL"], False)
        
-        if user.scrod == True:
-            schrodValue = "A"
+        if user.jtag == True:
+            jtagValue = "A"
         else:
-            schrodValue = "AB"
+            jtagValue = "AB"
 
         print "Input new bunchMarkerA: (0 - 5280)"
         bma = raw_input()
