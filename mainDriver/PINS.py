@@ -12,7 +12,7 @@ PINS = {
     "BMBRCLK" : 27,
     "SRA" : 22,
     "SRB" : 17,
-    "TEST1" : 7,
+    "SHUTDOWN" : 7,
     "DISPRES" : 30,
     "DISPDC" : 31,
 }

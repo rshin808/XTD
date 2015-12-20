@@ -1,4 +1,5 @@
 class si5338POST:
+
     def __init__(self, address = None, option = False, i2c = None, regs = None, interrupt = None, gpio = None):
         self._address = address
         self._option = option
@@ -6,7 +7,7 @@ class si5338POST:
         self._REGS = regs
         self._interrupt = interrupt
         self._GPIO = gpio
-
+        self._GPIO.setmode(gpio.BCM)
         self._init()
     
     def _init(self):

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from userSettings import *
 import RPi.GPIO as GPIO
 from smbus import SMBus

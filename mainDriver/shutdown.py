@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 from text import Text_string as TS
 import csv
@@ -5,7 +7,7 @@ from font import Font
 from PINS import *
 
 def checkShutdown(gpio = None, display = None):
-    if gpio.input(PINS["TEST1"]) == False:
+    if gpio.input(PINS["SHUTDOWN"]) == False:
         loffset = 10
         display.fill_screen((255, 255))
         shutdownDisp = TS(loffset, 26, 14, "Shutting Down", font14h)
