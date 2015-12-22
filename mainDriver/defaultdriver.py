@@ -17,11 +17,11 @@ from getIP import *
 import os
 
 # Default Values
-osc = 0
-testSignal = 0
-jtag = 1
-bma = 501 
-bmb = 499 
+osc        = 0   # 0 = RFin; 1 = osc
+testSignal = 0   # 0 = off; 1 = on
+jtag       = 1   # 1 = SCROD A; 0 = SCROD A+B
+bma        = 501
+bmb        = 499
 
 GPIO.cleanup()
 
@@ -171,7 +171,7 @@ try:
         else:
             pllValue="LOCKED"
         
-        if GPIO.input(PINS["SHUTDOWN"]) == True: # depends polarity of shutdown button
+        if GPIO.input(PINS["SHUTDOWN"]) == False: # depends polarity of shutdown button
             break; 
 
 except Exception, e:
