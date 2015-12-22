@@ -1,5 +1,5 @@
 PINS = {
-    "JTAGSEL" : 28,
+    "SCRODSEL" : 28,
     "TESTEN" : 29,
     "INTERRUPT" : 9,
     "TMS" : 14,

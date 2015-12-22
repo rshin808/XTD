@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from userSettings import *
 import RPi.GPIO as GPIO
 from smbus import SMBus
@@ -21,16 +23,13 @@ jtag = 1
 bma = 501 
 bmb = 499 
 
-
-
 GPIO.cleanup()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PINS["TESTEN"], GPIO.OUT)
-GPIO.setup(PINS["SCRODSEL"], GPIO.OUT)
-GPIO.setup(PINS["TEST1"], GPIO.IN)
+GPIO.setup(PINS["JTAGSEL"], GPIO.OUT)
+GPIO.setup(PINS["SHUTDOWN"], GPIO.IN)
 GPIO.output(PINS["TESTEN"], True)
-
 
 bus = SMBus(1)
 #user interactive components are commented out for default driver
@@ -57,23 +56,9 @@ except Exception, e:
         pass
 
 bus.close()
-'''
-print "Enable Test Signal: (0: Disable or 1: Enable)"
-testSignal = raw_input()
-print "Select SCROD: (A or A&B)"i
-scrod = raw_input()
-print "Input bunchMarkerA: (0 - 5280)"
-bma = raw_input()
-print "Input bunchMarkerB: (0 - 5280)"
-bmb = raw_input()
-
-print bin(int(bma))
-print bin(int(bmb))
-'''
 
 user.testSignal = bool(int(testSignal))
 user.jtag = bool(int(jtag))
-
 
 if bool(user.testSignal) == True:
     print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
@@ -83,11 +68,11 @@ else:
     GPIO.output(PINS["TESTEN"], False)
 
 if user.jtag == True:
-    print bcolors.OKGREEN + "SCROD A SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], True)
+    print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], True)
 else:
-    print bcolors.OKGREEN + "SCROD A&B SELECTED" + bcolors.ENDC
-    GPIO.output(PINS["SCRODSEL"], False)
+    print bcolors.OKGREEN + "JTAG A&B SELECTED" + bcolors.ENDC
+    GPIO.output(PINS["JTAGSEL"], False)
 
 user.bunchMarkerA = int(bma)
 user.bunchMarkerB = int(bmb)
@@ -100,7 +85,6 @@ BMB.reset()
 
 BMA.bunchMarker(user.bunchMarkerA)
 BMB.bunchMarker(user.bunchMarkerB)
-
 
 # Initialize Fonts
 font14h = Font("font14h")
@@ -119,7 +103,6 @@ pllTitle = "PLL:"
 jtagTitle = "JTAG:"
 IPTitle = "IP:"
 IPValue = getIP()
-
 
 # Set Label Values
 inputValue = ""
@@ -184,11 +167,11 @@ try:
         IPValue = getIP()
 
         if pll.check():
-            pllValue="WARNING"
+            pllValue="NOT LOCKED!"
         else:
             pllValue="LOCKED"
         
-        if GPIO.input(PINS["TEST1"]) == False:
+        if GPIO.input(PINS["SHUTDOWN"]) == True: # depends polarity of shutdown button
             break; 
 
 except Exception, e:
@@ -207,3 +190,4 @@ shutdownDisp.draw_string((0, 0), (255, 255), display)
 descDisp1.draw_string((0, 0), (255, 255), display)
 descDisp2.draw_string((0, 0), (255, 255), display)
 os.system("shutdown -h now")
+
