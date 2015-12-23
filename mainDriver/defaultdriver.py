@@ -18,7 +18,7 @@ import os
 
 # Default Values
 osc        = 0   # 0 = RFin; 1 = osc
-testSignal = 0   # 0 = off; 1 = on
+testSignal = 1   # 0 = off; 1 = on
 jtag       = 1   # 1 = SCROD A; 0 = SCROD A+B
 bma        = 501
 bmb        = 499

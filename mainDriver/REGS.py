@@ -1,5 +1,4 @@
 VCOREGS = {
-    "ENOUTS" : 230,
     "PLLWPASS" : 6,
     "PFDDIV" : 29,
     "PFDFB" : 30,
@@ -10,4 +9,5 @@ VCOREGS = {
     "MSNFB3S1" : 103,
     "MSNFB3S2" : 104,
     "MSNSTATE" : 118,
+    "ENOUTS" : 230,
 }
