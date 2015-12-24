@@ -8,5 +8,9 @@ filename = "SIREGValues.txt"
 with open(filename, "wb") as outputFile:
     outWriter = csv.writer(outputFile)
     for i in range(reg):
+        if i == 255:
+            i2c.write_byte_data(0x70, i, 0x01)
         outRow = [i, hex(i2c.read_byte_data(0x70, i))]
         outWriter.writerow(outRow) 
+
+i2c.write_byte_data(0x70, 255, 0)
