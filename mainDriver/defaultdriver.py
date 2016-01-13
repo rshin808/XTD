@@ -18,7 +18,7 @@ import os
 
 # Default Values
 osc        = 0   # 0 = RFin; 1 = osc
-testSignal = 0   # 0 = off; 1 = on
+testSignal = 1   # 0 = off; 1 = on
 jtag       = 1   # 1 = SCROD A; 0 = SCROD A+B
 bma        = 501
 bmb        = 499
@@ -124,10 +124,10 @@ if user.jtag == True:
 else:
     jtagValue = "AB"
 
-try:
+try:    
     display = seps525.SEPS525_nhd(DC = PINS["DISPDC"], RES = PINS["DISPRES"], gpio = GPIO)
     display.fill_screen((255,255))
-    while(True):          
+    while(True):         
         # Draw Labels
         loffset = 10
         inputDisp = TS(loffset, 10, 14, inputTitle, font14h)
