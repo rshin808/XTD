@@ -45,6 +45,13 @@ user.bunchMarkerA = int(bma)
 user.bunchMarkerB = int(bmb)
 
 #configuring XTD
+if bool(user.testSignal) == True:
+    print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
+    GPIO.output(PINS["TESTEN"], True)
+else:
+    print bcolors.OKGREEN + "Test Signal OFF" + bcolors.ENDC
+    GPIO.output(PINS["TESTEN"], False)
+
 print bcolors.WARNING + "Loading PLL" + bcolors.ENDC
 pll = si5338POST(0x70, user.osc, bus, VCOREGS, PINS["INTERRUPT"], GPIO)
 time.sleep(0.5)
@@ -53,13 +60,6 @@ if pll.check():
     exit()
 else:
     print bcolors.OKGREEN + "PLL Ready" + bcolors.ENDC
-
-if bool(user.testSignal) == True:
-    print bcolors.OKGREEN + "Test Signal ON" + bcolors.ENDC
-    GPIO.output(PINS["TESTEN"], True)
-else:
-    print bcolors.OKGREEN + "Test Signal OFF" + bcolors.ENDC
-    GPIO.output(PINS["TESTEN"], False)
 
 if user.jtag == True:
     print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
@@ -102,15 +102,15 @@ bmbValue = str(user.bunchMarkerB)
 testCircuitValue = " "
 pllValue = "LOCKED"
 if user.osc == 0:
-    inputValue = "RF"
+    inputValue = "RF  "
 else:
     inputValue = "OSC"
 if user.testSignal == True:
-    testCircuitValue = "ON"
+    testCircuitValue = "ON  "
 else:
     testCircuitValue = "OFF"
 if user.jtag == True:
-    jtagValue = "A"
+    jtagValue = "A  "
 else:
     jtagValue = "AB"
 
@@ -157,7 +157,7 @@ try:
 
         IPValue = getIP()
         
-        print "PLL Select: (0: RF or 1: VCO)"
+        print "PLL Select: (0: RF or 1: OSC)"
         osc = raw_input()        
         print "\n"+"Enable Test Signal: (0: Disable or 1: Enable)"
         testSignal = raw_input()
@@ -177,19 +177,19 @@ try:
         print bcolors.WARNING + "Loading PLL" + bcolors.ENDC
         pll = si5338POST(0x70, user.osc, bus, VCOREGS, PINS["INTERRUPT"], GPIO)
         time.sleep(0.5)
-        if pll.check():
-            print bcolors.FAIL + "Exiting..." + bcolors.ENDC
-            exit()
-        else:
-            print bcolors.OKGREEN + "PLL Ready" + bcolors.ENDC
-
         if user.testSignal == True:
             print bcolors.OKGREEN + "Test Signal ON " + bcolors.ENDC
             GPIO.output(PINS["TESTEN"], True)
         else:
             print bcolors.OKGREEN + "Test Signal OFF " + bcolors.ENDC
             GPIO.output(PINS["TESTEN"], False)
-                                                
+
+        if pll.check():
+            print bcolors.FAIL + "Exiting..." + bcolors.ENDC
+            exit()
+        else:
+            print bcolors.OKGREEN + "PLL Ready" + bcolors.ENDC
+                                           
         if user.jtag == True:
             print bcolors.OKGREEN + "JTAG A SELECTED" + bcolors.ENDC
             GPIO.output(PINS["JTAGSEL"], True)
@@ -207,15 +207,15 @@ try:
         if pll.check():
             pllValue="NOT LOCKED!"
         else:
-            pllValue="LOCKED"
+            pllValue="LOCKED      "
 
         if user.jtag == True:            
-            jtagValue = "A"
+            jtagValue = "A  "
         else:
             jtagValue = "AB"
 
         if user.testSignal == True:
-            testCircuitValue = "ON"
+            testCircuitValue = "ON  "
         else:
             testCircuitValue = "OFF"
 

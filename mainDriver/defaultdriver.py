@@ -169,7 +169,7 @@ try:
         if pll.check():
             pllValue="NOT LOCKED!"
         else:
-            pllValue="LOCKED"
+            pllValue="LOCKED       "
         
         if GPIO.input(PINS["SHUTDOWN"]) == False: # depends polarity of shutdown button
             break; 

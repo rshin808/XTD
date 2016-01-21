@@ -12,9 +12,12 @@ class si5338POST:
     
     def _init(self):    
         # Setting LVDS
-#        self._BUS.write_byte_data(self._address, 36, 0x06)
-#        self._BUS.write_byte_data(self._address, 37, 0x06)
-        
+        self._BUS.write_byte_data(self._address, 36, 0x06)
+        self._BUS.write_byte_data(self._address, 37, 0x06)
+        self._BUS.write_byte_data(self._address, 40, 0x63)
+        self._BUS.write_byte_data(self._address, 41, 0x8c)
+        self._BUS.write_byte_data(self._address, 42, 0x23)
+
         # Setting PLL bypass
 #        self._BUS.write_byte_data(self._address, 31, 0x08)        
         
