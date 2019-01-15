@@ -25,7 +25,7 @@ bmb = 499
 
 
 
-GPIO.cleanup()
+#GPIO.cleanup()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PINS["TESTEN"], GPIO.OUT)
@@ -200,3 +200,4 @@ except Exception, e:
         csvW.writerow(row)
 
 GPIO.cleanup()
+
